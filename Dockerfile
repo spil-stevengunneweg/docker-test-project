@@ -24,6 +24,8 @@ RUN apt-get install -y nginx
 # Append "daemon off;" to the beginning of the configuration
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
+ADD index.html /usr/share/nginx/html/
+
 # Expose ports
 EXPOSE 80
 
