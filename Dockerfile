@@ -1,24 +1,33 @@
-# Pull base image.
-FROM dockerfile/ubuntu
+############################################################
+# Dockerfile to build Nginx Installed Containers
+# Based on Ubuntu
+############################################################
 
-# Install Nginx.
-RUN \
-  add-apt-repository -y ppa:nginx/stable && \
-  apt-get update && \
-  apt-get install -y nginx && \
-  echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
-  chown -R www-data:www-data /var/lib/nginx
+# Set the base image to Ubuntu
+FROM ubuntu
 
-# Define mountable directories.
-VOLUME ["/data", "/etc/nginx/sites-enabled", "/var/log/nginx"]
+# File Author / Maintainer
+MAINTAINER Maintaner Name
 
-# Define working directory.
-WORKDIR /etc/nginx
+# Install Nginx
 
-# Define default command.
-CMD ["nginx"]
+# Update the repository
+RUN apt-get upgrade
+RUN apt-get update
 
-# Expose ports.
+# Install necessary tools
+RUN apt-get install -y nano wget dialog net-tools
+
+# Download and Install Nginx
+RUN apt-get install -y nginx  
+
+# Append "daemon off;" to the beginning of the configuration
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+
+# Expose ports
 EXPOSE 80
-EXPOSE 443
+
+# Set the default command to execute
+# when creating a new container
+CMD service nginx start
 
